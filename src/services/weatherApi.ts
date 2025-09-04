@@ -1,4 +1,8 @@
-const API_BASE = 'http://localhost:8000/api';
+// Prefer environment-configured API base. In dev, set VITE_API_BASE=http://localhost:8000/api
+// In hosted environments, set VITE_API_BASE to your backend URL, or rely on same-origin '/api'.
+const API_BASE = (typeof import.meta !== 'undefined' && (import.meta as any).env?.VITE_API_BASE)
+  ? ((import.meta as any).env.VITE_API_BASE as string)
+  : '/api';
 
 export interface WeatherData {
   city: string;
