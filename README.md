@@ -4,6 +4,42 @@
 
 **URL**: https://lovable.dev/projects/2b7ec249-3fb5-4fc0-9592-f5caad56c755
 
+## 🌟 New: Python Backend Added!
+
+This project now includes a **Python FastAPI backend** that provides real weather data instead of mock data!
+
+### 🚀 Quick Start with Backend
+
+1. **Get a free OpenWeather API key**:
+   - Visit [openweathermap.org/api](https://openweathermap.org/api)
+   - Sign up and get your free API key
+
+2. **Start the backend**:
+   ```bash
+   # Windows
+   start_backend.bat
+   
+   # macOS/Linux
+   chmod +x start_backend.sh
+   ./start_backend.sh
+   ```
+
+3. **Start the frontend**:
+   ```bash
+   npm run dev
+   ```
+
+The backend will run on `http://localhost:8000` and your frontend will automatically connect to it!
+
+### 🔧 Backend Features
+
+- **Real-time weather data** from OpenWeatherMap API
+- **5-day weather forecasts**
+- **City search with autocomplete**
+- **Fast performance** with FastAPI
+- **Auto-generated API docs** at `/docs`
+- **CORS configured** for frontend integration
+
 ## How can I edit this code?
 
 There are several ways of editing your application.
@@ -54,11 +90,19 @@ npm run dev
 
 This project is built with:
 
+### Frontend
 - Vite
 - TypeScript
 - React
 - shadcn-ui
 - Tailwind CSS
+
+### Backend
+- Python 3.8+
+- FastAPI
+- OpenWeatherMap API
+- Async HTTP with httpx
+- Pydantic data validation
 
 ## How can I deploy this project?
 
@@ -71,3 +115,18 @@ Yes, you can!
 To connect a domain, navigate to Project > Settings > Domains and click Connect Domain.
 
 Read more here: [Setting up a custom domain](https://docs.lovable.dev/tips-tricks/custom-domain#step-by-step-guide)
+
+## 📚 Backend Documentation
+
+For detailed backend information, see [backend/README.md](backend/README.md)
+
+## 🔑 Environment Setup
+
+Create a `.env` file in the `backend/` directory:
+
+```env
+OPENWEATHER_API_KEY=your_api_key_here
+BACKEND_HOST=0.0.0.0
+BACKEND_PORT=8000
+CORS_ORIGINS=http://localhost:5173,http://localhost:3000
+```

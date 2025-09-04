@@ -3,27 +3,7 @@ import { WeatherSearch } from "./WeatherSearch";
 import { WeatherCard } from "./WeatherCard";
 import { ForecastCard } from "./ForecastCard";
 import { useToast } from "@/hooks/use-toast";
-
-interface WeatherData {
-  city: string;
-  country: string;
-  temperature: number;
-  condition: string;
-  description: string;
-  humidity: number;
-  windSpeed: number;
-  visibility: number;
-  feelsLike: number;
-}
-
-interface ForecastDay {
-  date: string;
-  day: string;
-  high: number;
-  low: number;
-  condition: string;
-  description: string;
-}
+import { weatherApi, WeatherData, ForecastDay } from "@/services/weatherApi";
 
 export const WeatherDashboard = () => {
   const [currentWeather, setCurrentWeather] = useState<WeatherData | null>(null);
@@ -31,81 +11,26 @@ export const WeatherDashboard = () => {
   const [loading, setLoading] = useState(false);
   const { toast } = useToast();
 
-  // Mock API call - In a real app, you'd use OpenWeatherMap or similar API
+  // Real API call to our Python backend
   const fetchWeatherData = async (city: string) => {
     setLoading(true);
     
     try {
-      // Simulate API delay
-      await new Promise(resolve => setTimeout(resolve, 1000));
+      // Fetch both current weather and forecast from our backend
+      const { current, forecast } = await weatherApi.getWeatherAndForecast(city);
       
-      // Mock weather data - replace with real API call
-      const mockWeatherData: WeatherData = {
-        city: city,
-        country: "Country",
-        temperature: Math.round(Math.random() * 30 + 5), // 5-35°C
-        condition: ["clear", "clouds", "rain"][Math.floor(Math.random() * 3)],
-        description: "scattered clouds",
-        humidity: Math.round(Math.random() * 40 + 40), // 40-80%
-        windSpeed: Math.round(Math.random() * 20 + 5), // 5-25 km/h
-        visibility: Math.round(Math.random() * 10 + 5), // 5-15 km
-        feelsLike: Math.round(Math.random() * 30 + 5), // 5-35°C
-      };
-
-      const mockForecast: ForecastDay[] = [
-        {
-          date: "2024-01-01",
-          day: "Today",
-          high: mockWeatherData.temperature + Math.round(Math.random() * 5),
-          low: mockWeatherData.temperature - Math.round(Math.random() * 5),
-          condition: mockWeatherData.condition,
-          description: mockWeatherData.description,
-        },
-        {
-          date: "2024-01-02",
-          day: "Tomorrow",
-          high: Math.round(Math.random() * 30 + 5),
-          low: Math.round(Math.random() * 15 + 0),
-          condition: ["clear", "clouds", "rain"][Math.floor(Math.random() * 3)],
-          description: "partly cloudy",
-        },
-        {
-          date: "2024-01-03",
-          day: "Wednesday",
-          high: Math.round(Math.random() * 30 + 5),
-          low: Math.round(Math.random() * 15 + 0),
-          condition: ["clear", "clouds", "rain"][Math.floor(Math.random() * 3)],
-          description: "sunny",
-        },
-        {
-          date: "2024-01-04",
-          day: "Thursday",
-          high: Math.round(Math.random() * 30 + 5),
-          low: Math.round(Math.random() * 15 + 0),
-          condition: ["clear", "clouds", "rain"][Math.floor(Math.random() * 3)],
-          description: "light rain",
-        },
-        {
-          date: "2024-01-05",
-          day: "Friday",
-          high: Math.round(Math.random() * 30 + 5),
-          low: Math.round(Math.random() * 15 + 0),
-          condition: ["clear", "clouds", "rain"][Math.floor(Math.random() * 3)],
-          description: "overcast",
-        },
-      ];
-
-      setCurrentWeather(mockWeatherData);
-      setForecast(mockForecast);
+      setCurrentWeather(current);
+      setForecast(forecast);
       
       toast({
         title: "Weather data loaded",
         description: `Successfully loaded weather for ${city}`,
       });
     } catch (error) {
+      console.error("Weather API error:", error);
       toast({
         title: "Error",
-        description: "Failed to fetch weather data. Please try again.",
+        description: error instanceof Error ? error.message : "Failed to fetch weather data. Please try again.",
         variant: "destructive",
       });
     } finally {
