@@ -39,7 +39,10 @@ export interface CitySearchResult {
 
 class WeatherApiService {
   private async makeRequest<T>(endpoint: string, params?: Record<string, string>): Promise<T> {
-    const url = new URL(`${API_BASE}${endpoint}`);
+    // Support absolute bases (http...) and relative bases (/api)
+    const url = API_BASE.startsWith('http')
+      ? new URL(endpoint, API_BASE)
+      : new URL(`${API_BASE}${endpoint}`, window.location.origin);
     
     if (params) {
       Object.entries(params).forEach(([key, value]) => {
