@@ -178,13 +178,14 @@ async def search_cities(
 
 if __name__ == "__main__":
     import uvicorn
-    
+
     if not OPENWEATHER_API_KEY:
         logger.warning("OpenWeather API key not found. Please set OPENWEATHER_API_KEY environment variable.")
-    
+
+    # Use Render's $PORT env variable (falls back to 8000 locally)
     uvicorn.run(
         "main:app",
-        host=os.getenv("BACKEND_HOST", "0.0.0.0"),
-        port=int(os.getenv("BACKEND_PORT", 8000)),
-        reload=True
+        host="0.0.0.0",
+        port=int(os.getenv("PORT", 8000))
     )
+
