@@ -1,132 +1,87 @@
-# Welcome to your Lovable project
+# 🌦️ Lovelystars Weather App
 
-## Project info
+A weather dashboard application built with **FastAPI** (backend) and a modern frontend (JS/React/Vite).  
+It fetches weather data from the **OpenWeather API** and displays current conditions + forecasts.
 
-**URL**: https://lovable.dev/projects/2b7ec249-3fb5-4fc0-9592-f5caad56c755
+---
 
-## 🌟 New: Python Backend Added!
+## 🚀 Live Deployment
 
-This project now includes a **Python FastAPI backend** that provides real weather data instead of mock data!
+The backend is hosted on **Render (free tier)**:
 
-### 🚀 Quick Start with Backend
+👉 (https://lovelystars-weather.onrender.com)
 
-1. **Get a free OpenWeather API key**:
-   - Visit [openweathermap.org/api](https://openweathermap.org/api)
-   - Sign up and get your free API key
+⚠️ Notes on free Render hosting:
+- The free instance **sleeps after 15 minutes of inactivity**.
+- When you first open it after being idle, the server may take **30–60 seconds to "cold start"**.
+- To wake up the backend, visit the base URL above, or call the `/health` endpoint:
+https://lovelystars-weather.onrender.com/health
 
-2. **Start the backend**:
-   ```bash
-   # Windows
-   start_backend.bat
-   
-   # macOS/Linux
-   chmod +x start_backend.sh
-   ./start_backend.sh
-   ```
 
-3. **Start the frontend**:
-   ```bash
-   npm run dev
-   ```
+- Once awake, your frontend will be able to fetch data normally.
 
-The backend will run on `http://localhost:8000` and your frontend will automatically connect to it!
+---
 
-### 🔧 Backend Features
+## 🖥️ Running Locally (Windows)
 
-- **Real-time weather data** from OpenWeatherMap API
-- **5-day weather forecasts**
-- **City search with autocomplete**
-- **Fast performance** with FastAPI
-- **Auto-generated API docs** at `/docs`
-- **CORS configured** for frontend integration
+### 1. Clone the Repository
+```bash
+git clone https://github.com/Simon-Georgis/lovelystars-weather.git
+cd lovelystars-weather
+2. Create a Virtual Environment
 
-## How can I edit this code?
+python -m venv venv
+venv\Scripts\activate
 
-There are several ways of editing your application.
 
-**Use Lovable**
+3. Install Dependencies
 
-Simply visit the [Lovable Project](https://lovable.dev/projects/2b7ec249-3fb5-4fc0-9592-f5caad56c755) and start prompting.
+pip install -r requirements.txt
+4. Set Environment Variables
+Create a .env file in the project root:
 
-Changes made via Lovable will be committed automatically to this repo.
 
-**Use your preferred IDE**
+OPENWEATHER_API_KEY=your_openweather_api_key
+CORS_ORIGINS=http://localhost:5173
+Replace your_openweather_api_key with a valid API key from OpenWeather.
 
-If you want to work locally using your own IDE, you can clone this repo and push changes. Pushed changes will also be reflected in Lovable.
+5. Run the Backend
 
-The only requirement is having Node.js & npm installed - [install with nvm](https://github.com/nvm-sh/nvm#installing-and-updating)
+uvicorn main:app --host 0.0.0.0 --port 8000 --reload
+Backend will start at:
 
-Follow these steps:
 
-```sh
-# Step 1: Clone the repository using the project's Git URL.
-git clone <YOUR_GIT_URL>
+http://localhost:8000
+Test endpoints in your browser:
 
-# Step 2: Navigate to the project directory.
-cd <YOUR_PROJECT_NAME>
+http://localhost:8000/health
 
-# Step 3: Install the necessary dependencies.
-npm i
+http://localhost:8000/weather/current?city=sydney
 
-# Step 4: Start the development server with auto-reloading and an instant preview.
+6. Run the Frontend (if included)
+If the repo has a frontend folder (client/ or frontend/):
+
+
+cd frontend
+npm install
 npm run dev
-```
+Frontend will start at:
 
-**Edit a file directly in GitHub**
 
-- Navigate to the desired file(s).
-- Click the "Edit" button (pencil icon) at the top right of the file view.
-- Make your changes and commit the changes.
+http://localhost:5173
+🌐 API Endpoints
+GET /weather/current?city=sydney → Current weather
 
-**Use GitHub Codespaces**
+GET /weather/forecast?city=sydney → 5-day forecast
 
-- Navigate to the main page of your repository.
-- Click on the "Code" button (green button) near the top right.
-- Select the "Codespaces" tab.
-- Click on "New codespace" to launch a new Codespace environment.
-- Edit files directly within the Codespace and commit and push your changes once you're done.
+GET /weather/search?query=syd → Search for cities
 
-## What technologies are used for this project?
+GET /health → Health check
 
-This project is built with:
+⚡ Troubleshooting
+502 error on Render → Happens if the app doesn’t bind to the correct $PORT.
+This project is already configured to use Render’s PORT env variable.
 
-### Frontend
-- Vite
-- TypeScript
-- React
-- shadcn-ui
-- Tailwind CSS
+Slow first request → Normal on Render free tier (cold start).
 
-### Backend
-- Python 3.8+
-- FastAPI
-- OpenWeatherMap API
-- Async HTTP with httpx
-- Pydantic data validation
-
-## How can I deploy this project?
-
-Simply open [Lovable](https://lovable.dev/projects/2b7ec249-3fb5-4fc0-9592-f5caad56c755) and click on Share -> Publish.
-
-## Can I connect a custom domain to my Lovable project?
-
-Yes, you can!
-
-To connect a domain, navigate to Project > Settings > Domains and click Connect Domain.
-
-Read more here: [Setting up a custom domain](https://docs.lovable.dev/tips-tricks/custom-domain#step-by-step-guide)
-
-## 📚 Backend Documentation
-
-For detailed backend information, see [backend/README.md](backend/README.md)
-
-## 🔑 Environment Setup
-
-Create a `.env` file in the `backend/` directory:
-
-```env
-OPENWEATHER_API_KEY=your_api_key_here
-BACKEND_HOST=0.0.0.0
-BACKEND_PORT=8000
-CORS_ORIGINS=http://localhost:5173,http://localhost:3000
-```
+404 errors → Make sure you’re using the correct route paths (/weather/...).
