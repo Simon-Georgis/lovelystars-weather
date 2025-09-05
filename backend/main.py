@@ -50,7 +50,7 @@ async def health_check():
     """Health check endpoint"""
     return {"status": "healthy", "timestamp": datetime.now().isoformat()}
 
-@app.get("/api/weather/current")
+@app.get("/weather/current")
 async def get_current_weather(
     city: str = Query(..., description="City name"),
     country_code: Optional[str] = Query(None, description="Country code (e.g., US, GB)")
@@ -91,7 +91,7 @@ async def get_current_weather(
         logger.error(f"Unexpected error: {e}")
         raise HTTPException(status_code=500, detail="Internal server error")
 
-@app.get("/api/weather/forecast")
+@app.get("/weather/forecast")
 async def get_weather_forecast(
     city: str = Query(..., description="City name"),
     country_code: Optional[str] = Query(None, description="Country code (e.g., US, GB)")
@@ -132,7 +132,7 @@ async def get_weather_forecast(
         logger.error(f"Unexpected error: {e}")
         raise HTTPException(status_code=500, detail="Internal server error")
 
-@app.get("/api/weather/search")
+@app.get("/weather/search")
 async def search_cities(
     query: str = Query(..., description="City search query"),
     limit: int = Query(5, ge=1, le=10, description="Maximum number of results")
