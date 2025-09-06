@@ -49,6 +49,9 @@ export const WeatherDashboard = () => {
           <p className="text-xl text-white/80 animate-fade-in">
             Get real-time weather information for any city
           </p>
+          <p className="text-xl text-white/80 animate-fade-in">
+            First search will take a few seconds to load
+          </p>
         </div>
 
         {/* Search */}
